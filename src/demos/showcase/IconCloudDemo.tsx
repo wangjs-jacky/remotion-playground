@@ -5,12 +5,11 @@ import { z } from "zod";
 // ── 可配置参数 Schema ────────────────────────────────────────────
 export const IconCloudSchema = z.object({
   cardSize: z.number().min(60).max(220).default(110),
-  majorRadius: z.number().min(150).max(700).default(340),
-  minorRadius: z.number().min(40).max(260).default(130),
+  sphereRadius: z.number().min(150).max(700).default(380),
   rotationSpeed: z.number().min(0.1).max(4.0).default(1.0),
   cardOpacity: z.number().min(0.2).max(1.0).default(0.9),
   perspectiveDepth: z.number().min(500).max(3000).default(1300),
-  tiltAngle: z.number().min(0).max(70).default(25),
+  tiltAngle: z.number().min(0).max(70).default(20),
 });
 
 export type IconCloudProps = z.infer<typeof IconCloudSchema>;
@@ -53,48 +52,56 @@ const ICONS: IconDef[] = [
 ];
 
 const N = ICONS.length; // 24
-const GOLDEN = 1.6180339887;
+// Fibonacci 球面分布：黄金角，每步旋转约 137.5°，确保均匀铺满球面
+const GOLDEN_ANGLE = Math.PI * (3 - Math.sqrt(5)); // ≈ 2.3998 rad
 
 // ── 主组件 ────────────────────────────────────────────────────────
 export const IconCloudDemo: React.FC<IconCloudProps> = ({
   cardSize = 110,
-  majorRadius = 340,
-  minorRadius = 130,
+  sphereRadius = 380,
   rotationSpeed = 1.0,
   cardOpacity = 0.9,
   perspectiveDepth = 1300,
-  tiltAngle = 25,
+  tiltAngle = 20,
 }) => {
   const frame = useCurrentFrame();
   const { width, height } = useVideoConfig();
 
   const tiltRad = (tiltAngle * Math.PI) / 180;
-  // speed=1 → 一圈 20 秒
-  const baseTheta = (frame / (30 * 20)) * rotationSpeed * Math.PI * 2;
+  // speed=1 → 绕 Y 轴一圈 20 秒
+  const rotY = (frame / (30 * 20)) * rotationSpeed * Math.PI * 2;
 
   const cards = Array.from({ length: N }, (_, i) => {
-    // 圆环面坐标：θ 绕大圆，φ 绕小圆截面
-    const theta = (2 * Math.PI * i) / N + baseTheta;
-    const phi = (2 * Math.PI * i * GOLDEN) % (2 * Math.PI);
+    // ── Fibonacci 球面分布（静态位置）──
+    const y0 = 1 - (i / (N - 1)) * 2;           // Y 从 +1 到 -1（极点到极点）
+    const r0 = Math.sqrt(Math.max(0, 1 - y0 * y0)); // 该纬度圈半径
+    const phi = GOLDEN_ANGLE * i;                 // 黄金角累积，确保均匀分布
 
-    const rr = majorRadius + minorRadius * Math.cos(phi);
-    const x = rr * Math.cos(theta);
-    const y = minorRadius * Math.sin(phi);
-    const zRaw = rr * Math.sin(theta);
+    let x = r0 * Math.cos(phi) * sphereRadius;
+    let y = y0 * sphereRadius;
+    let z = r0 * Math.sin(phi) * sphereRadius;
 
-    // 绕 X 轴倾斜（营造俯视视角）
+    // ── 绕 Y 轴旋转（整球自转动画）──
+    const cosY = Math.cos(rotY);
+    const sinY = Math.sin(rotY);
+    const x1 = x * cosY + z * sinY;
+    const z1 = -x * sinY + z * cosY;
+    x = x1;
+    z = z1;
+
+    // ── 绕 X 轴倾斜（相机俯视角）──
     const cosT = Math.cos(tiltRad);
     const sinT = Math.sin(tiltRad);
-    const y2 = y * cosT - zRaw * sinT;
-    const z2 = y * sinT + zRaw * cosT;
+    const y2 = y * cosT - z * sinT;
+    const z2 = y * sinT + z * cosT;
 
-    // 透视投影
+    // ── 透视投影 ──
     const d = perspectiveDepth / (perspectiveDepth + z2);
     const sx = width / 2 + x * d;
     const sy = height / 2 + y2 * d;
 
-    // 深度渐隐：远处更透明（营造空间纵深感）
-    const depthFade = Math.max(0.18, Math.min(1, d * 0.88 + 0.12));
+    // 深度渐隐：球背面更透明
+    const depthFade = Math.max(0.15, Math.min(1, d * 0.9 + 0.1));
 
     return { sx, sy, scale: d, z: z2, depthFade, iconIndex: i };
   });

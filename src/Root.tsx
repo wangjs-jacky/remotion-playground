@@ -289,7 +289,7 @@ export const RemotionRoot = () => {
           width={2048}
           height={2048}
           schema={IconCloudSchema}
-          defaultProps={{"cardSize":110,"majorRadius":300,"minorRadius":130,"rotationSpeed":4,"cardOpacity":0.9,"perspectiveDepth":1300,"tiltAngle":25}}
+          defaultProps={{"cardSize":110,"sphereRadius":380,"rotationSpeed":1.0,"cardOpacity":0.9,"perspectiveDepth":1300,"tiltAngle":20}}
         />
       </Folder>
 
