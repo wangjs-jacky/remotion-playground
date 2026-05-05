@@ -1,0 +1,28 @@
+{
+  "name": "remotion-playground",
+  "version": "1.0.0",
+  "description": "Remotion 功能示例项目 - 覆盖大部分核心功能",
+  "scripts": {
+    "start": "npx remotion studio",
+    "build": "npx remotion render src/index.ts FadeIn out/demo.mp4",
+    "upgrade": "npx remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.441",
+    "@remotion/google-fonts": "4.0.441",
+    "@remotion/gif": "4.0.441",
+    "@remotion/lottie": "4.0.441",
+    "@remotion/media": "4.0.441",
+    "@remotion/paths": "4.0.441",
+    "@remotion/transitions": "4.0.441",
+    "@remotion/zod-types": "4.0.441",
+    "react": "^19",
+    "react-dom": "^19",
+    "remotion": "4.0.441",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "typescript": "^5.7.0"
+  }
+}

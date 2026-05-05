@@ -1,0 +1,4 @@
+{"type":"server-started","port":56244,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:56244","screen_dir":"/Users/jiashengwang/jacky-github/jacky-remotion/.superpowers/brainstorm/87289-1777896482"}
+{"type":"screen-added","file":"/Users/jiashengwang/jacky-github/jacky-remotion/.superpowers/brainstorm/87289-1777896482/visual-style.html"}
+{"source":"user-event","type":"click","text":"A\n    \n      Terminal Noir 暗黑美食\n      你偏好的深色主题 + 霓虹点缀。暗色石质背景，食材用发光轮廓线+半透明渐变表现，蒸汽用粒子动画。类似赛博朋克美食广告。","choice":"a","id":null,"timestamp":1777896660731}
+{"type":"screen-added","file":"/Users/jiashengwang/jacky-github/jacky-remotion/.superpowers/brainstorm/87289-1777896482/waiting.html"}
