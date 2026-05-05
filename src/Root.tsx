@@ -38,6 +38,7 @@ import { ParameterizedDemo, ParameterizedSchema } from "./demos/parameterized/Pa
 import { ChromeTiltInteractiveDemo } from "./demos/showcase/ChromeTiltInteractiveDemo";
 import { VideoRotationDemo } from "./demos/showcase/VideoRotationDemo";
 import { TechGridDemo } from "./demos/showcase/TechGridDemo";
+import { IconCloudDemo, IconCloudSchema } from "./demos/showcase/IconCloudDemo";
 
 // ─── 汉堡广告示例 ────────────────────────────────
 import { BurgerAdDemo } from "./demos/burger-ad/BurgerAdDemo";
@@ -279,6 +280,16 @@ export const RemotionRoot = () => {
           fps={30}
           width={2560}
           height={1440}
+        />
+        <Composition
+          id="IconCloud"
+          component={IconCloudDemo}
+          durationInFrames={600}
+          fps={30}
+          width={2048}
+          height={2048}
+          schema={IconCloudSchema}
+          defaultProps={{"cardSize":110,"majorRadius":300,"minorRadius":130,"rotationSpeed":4,"cardOpacity":0.9,"perspectiveDepth":1300,"tiltAngle":25}}
         />
       </Folder>
 
