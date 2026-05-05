@@ -37,6 +37,7 @@ import { ThumbnailDemo } from "./demos/stills/ThumbnailDemo";
 import { ParameterizedDemo, ParameterizedSchema } from "./demos/parameterized/ParameterizedDemo";
 import { ChromeTiltInteractiveDemo } from "./demos/showcase/ChromeTiltInteractiveDemo";
 import { VideoRotationDemo } from "./demos/showcase/VideoRotationDemo";
+import { TechGridDemo } from "./demos/showcase/TechGridDemo";
 
 // ─── 汉堡广告示例 ────────────────────────────────
 import { BurgerAdDemo } from "./demos/burger-ad/BurgerAdDemo";
@@ -270,6 +271,14 @@ export const RemotionRoot = () => {
           fps={30}
           width={1920}
           height={1080}
+        />
+        <Composition
+          id="TechGrid"
+          component={TechGridDemo}
+          durationInFrames={300}
+          fps={30}
+          width={2560}
+          height={1440}
         />
       </Folder>
 
